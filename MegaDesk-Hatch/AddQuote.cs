@@ -12,9 +12,32 @@ namespace MegaDesk_Hatch
 {
     public partial class AddQuote : Form
     {
-        public AddQuote()
-        {
+        // private Form _mainMenu;
+        public AddQuote( )
+        {   //Form mainMenu
             InitializeComponent();
+            //_mainMenu = mainMenu;
+
+            //Populate SurfaceMaterials dropdown menu
+            var materials = new List<Desk.DesktopMaterial>();
+
+            materials = Enum.GetValues(typeof(Desk.DesktopMaterial))
+                            .Cast<Desk.DesktopMaterial>()
+                            .ToList();
+            comSurfaceMaterial.DataSource = materials;
+
+            comSurfaceMaterial.SelectedIndex = -1;
+
+            //Populate shipping type dropdown menu
+            var shipping = new List<DeskQuote.Delivery>();
+
+            shipping = Enum.GetValues(typeof(DeskQuote.Delivery))
+                            .Cast<DeskQuote.Delivery>()
+                            .ToList();
+            comShippingMethod.DataSource = shipping;
+
+            comShippingMethod.SelectedIndex = 0;
+
 
         }
 
@@ -31,8 +54,10 @@ namespace MegaDesk_Hatch
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            
-            this.Close();
+            var MainMenu = new MainMenu();
+            MainMenu.Tag = this;
+            MainMenu.Show();
+            this.Hide();
         }
 
         private void NumDrawers_ValueChanged(object sender, EventArgs e)

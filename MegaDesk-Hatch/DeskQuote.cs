@@ -8,11 +8,18 @@ namespace MegaDesk_Hatch
 {
     public class DeskQuote
     {
+        public enum Delivery
+        {
+            Standard
+            , Rush3
+            , Rush5
+            , Rush7
+        }
+
         public string CustomerName { get; set; }
 
         public DateTime QuoteDate { get; set; }
 
-        public string ShippingType { get; set; }
 
         public decimal QuotePrice { get; set; }
 

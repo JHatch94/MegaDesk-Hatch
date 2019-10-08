@@ -38,16 +38,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.numDrawers = new System.Windows.Forms.NumericUpDown();
-            this.numSurface = new System.Windows.Forms.NumericUpDown();
             this.numDepth = new System.Windows.Forms.NumericUpDown();
             this.numWidth = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.comSurfaceMaterial = new System.Windows.Forms.ComboBox();
+            this.comShippingMethod = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numDrawers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSurface)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDepth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGetQuote
@@ -149,13 +147,6 @@
             this.numDrawers.TabIndex = 11;
             this.numDrawers.ValueChanged += new System.EventHandler(this.NumDrawers_ValueChanged);
             // 
-            // numSurface
-            // 
-            this.numSurface.Location = new System.Drawing.Point(309, 217);
-            this.numSurface.Name = "numSurface";
-            this.numSurface.Size = new System.Drawing.Size(120, 22);
-            this.numSurface.TabIndex = 12;
-            // 
             // numDepth
             // 
             this.numDepth.Location = new System.Drawing.Point(85, 130);
@@ -200,18 +191,6 @@
             0,
             0});
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(562, 127);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown1.TabIndex = 17;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -222,16 +201,32 @@
             this.label7.TabIndex = 16;
             this.label7.Text = "Choose Shipping Method";
             // 
+            // comSurfaceMaterial
+            // 
+            this.comSurfaceMaterial.FormattingEnabled = true;
+            this.comSurfaceMaterial.Location = new System.Drawing.Point(309, 216);
+            this.comSurfaceMaterial.Name = "comSurfaceMaterial";
+            this.comSurfaceMaterial.Size = new System.Drawing.Size(120, 24);
+            this.comSurfaceMaterial.TabIndex = 18;
+            // 
+            // comShippingMethod
+            // 
+            this.comShippingMethod.FormattingEnabled = true;
+            this.comShippingMethod.Location = new System.Drawing.Point(542, 125);
+            this.comShippingMethod.Name = "comShippingMethod";
+            this.comShippingMethod.Size = new System.Drawing.Size(120, 24);
+            this.comShippingMethod.TabIndex = 19;
+            // 
             // AddQuote
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.comShippingMethod);
+            this.Controls.Add(this.comSurfaceMaterial);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.numWidth);
             this.Controls.Add(this.numDepth);
-            this.Controls.Add(this.numSurface);
             this.Controls.Add(this.numDrawers);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
@@ -246,10 +241,8 @@
             this.Text = "AddQuote";
             this.Load += new System.EventHandler(this.AddQuote_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numDrawers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numSurface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDepth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,10 +260,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numDrawers;
-        private System.Windows.Forms.NumericUpDown numSurface;
         private System.Windows.Forms.NumericUpDown numDepth;
         private System.Windows.Forms.NumericUpDown numWidth;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comSurfaceMaterial;
+        private System.Windows.Forms.ComboBox comShippingMethod;
     }
 }
