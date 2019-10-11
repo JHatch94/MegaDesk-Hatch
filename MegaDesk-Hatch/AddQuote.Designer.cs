@@ -56,6 +56,7 @@
             this.btnGetQuote.TabIndex = 0;
             this.btnGetQuote.Text = "Get Quote";
             this.btnGetQuote.UseVisualStyleBackColor = true;
+            this.btnGetQuote.Click += new System.EventHandler(this.BtnGetQuote_Click);
             // 
             // btnCancel
             // 

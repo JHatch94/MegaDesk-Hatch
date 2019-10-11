@@ -17,11 +17,12 @@ namespace MegaDesk_Hatch
             , Pine
         }
 
-        public float Width { get; set; }
+        public decimal Width { get; set; }
 
-        public float Depth { get; set; }
+        public decimal Depth { get; set; }
 
-        public float NumberOfDrawers { get; set; }
+        public decimal NumberOfDrawers { get; set; }
+        public DesktopMaterial SurfaceMaterial { get; set; }
 
     }
 }

@@ -64,5 +64,17 @@ namespace MegaDesk_Hatch
         {
 
         }
+
+        private void BtnGetQuote_Click(object sender, EventArgs e)
+        {
+            var desk = new Desk();
+
+            desk.Depth = numDepth.Value;
+            desk.Width = numWidth.Value;
+
+
+            var DeskQuote = new DeskQuote();
+
+        }
     }
 }
