@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,12 @@ namespace MegaDesk_Hatch
 {
     public class DeskQuote
     {
+        public DeskQuote(){
+            getRushOrderPrices();
+
+        }
+        private int[,] _rushOrderPrices;
+
         const decimal BASE_DESK_PRICE = 200.0M;
         const decimal SURFACE_AREA_COST = 1.0M;
         const decimal DRAWER_COST = 50.0M;
@@ -89,6 +96,34 @@ namespace MegaDesk_Hatch
 
             return runningTotal;
         }
+        private void getRushOrderPrices()
+        {
+            _rushOrderPrices = new int[3, 3];
+            var pricesFile = @"rushOrderPrices.txt";
 
+            try
+            {
+                string[] prices = File.ReadAllLines(pricesFile);
+                int i = 0, j = 0;
+
+                foreach (string price in prices)
+                {
+                    _rushOrderPrices[i, j] = int.Parse(price);
+                    if (j ==2)
+                    {
+                        i++;
+                        j = 0;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }
