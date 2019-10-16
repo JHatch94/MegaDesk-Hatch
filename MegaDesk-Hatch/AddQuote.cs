@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MegaDesk_Hatch
 {
@@ -75,6 +76,26 @@ namespace MegaDesk_Hatch
 
             var DeskQuote = new DeskQuote();
 
+        }
+        private void AddQuoteToFile(DeskQuote deskquote)
+        {
+            var quotesFile = @"quotes.json";
+            List<DeskQuote> deskQuotes = new List<DeskQuote>();
+
+            //read existing quotes
+            if (File.Exists(quotesFile))
+            {
+                using (StreamReader reader = new StreamReader(quotesFile))
+                {
+                    string quotes = reader.ReadToEnd();
+                    if (quotes.Length > 0)
+                    {
+                        deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
+                    }
+                }
+            }
+            deskQuotes.Add(deskQuote);
+            SaveQuotes(deskQuotes);
         }
     }
 }
