@@ -41,7 +41,7 @@ namespace MegaDesk_Hatch
             , Rush5
             , Rush7
         }
-
+        // Declare methods
         public string CustomerName { get; set; }
 
         public DateTime QuoteDate { get; set; }
