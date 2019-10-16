@@ -23,6 +23,15 @@ namespace MegaDesk_Hatch
         const decimal PINE_COST = 50.0M;
         const decimal ROSEWOOD_COST = 300.0M;
         const decimal VENEER_COST = 125.0M;
+        decimal RUSH_3DAY_LESS_THAN_1000 = rushorderprice[0,0];
+        decimal RUSH_3DAY_1000_TO_2000 = rushorderprice[0, 1];
+        decimal RUSH_3DAY_GREATER_THAN_2000 = rushorderprice[0, 2];
+        decimal RUSH_5DAY_LESS_THAN_1000 = rushorderprice[1, 0];
+        decimal RUSH_5DAY_1000_TO_2000 = rushorderprice[1, 1];
+        decimal RUSH_5DAY_GREATER_THAN_2000 = rushorderprice[1, 2];
+        decimal RUSH_7DAY_LESS_THAN_1000 = rushorderprice[2, 0];
+        decimal RUSH_7DAY_1000_TO_2000 = rushorderprice[2, 1];
+        decimal RUSH_7DAY_GREATER_THAN_2000 = rushorderprice[2, 2];
 
 
         public enum Delivery
