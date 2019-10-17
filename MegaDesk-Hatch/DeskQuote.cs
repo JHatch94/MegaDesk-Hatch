@@ -10,10 +10,11 @@ namespace MegaDesk_Hatch
     public class DeskQuote
     {
         public DeskQuote(){
-            getRushOrderPrices();
+           getRushOrderPrices();
 
-        }
-        private int[,] _rushOrderPrices;
+          }
+        static int[,] rushOrderPrices;
+         //private int[,] rushOrderPrices;
 
         const decimal BASE_DESK_PRICE = 200.0M;
         const decimal SURFACE_AREA_COST = 1.0M;
@@ -23,15 +24,15 @@ namespace MegaDesk_Hatch
         const decimal PINE_COST = 50.0M;
         const decimal ROSEWOOD_COST = 300.0M;
         const decimal VENEER_COST = 125.0M;
-        decimal RUSH_3DAY_LESS_THAN_1000 = rushorderprice[0,0];
-        decimal RUSH_3DAY_1000_TO_2000 = rushorderprice[0, 1];
-        decimal RUSH_3DAY_GREATER_THAN_2000 = rushorderprice[0, 2];
-        decimal RUSH_5DAY_LESS_THAN_1000 = rushorderprice[1, 0];
-        decimal RUSH_5DAY_1000_TO_2000 = rushorderprice[1, 1];
-        decimal RUSH_5DAY_GREATER_THAN_2000 = rushorderprice[1, 2];
-        decimal RUSH_7DAY_LESS_THAN_1000 = rushorderprice[2, 0];
-        decimal RUSH_7DAY_1000_TO_2000 = rushorderprice[2, 1];
-        decimal RUSH_7DAY_GREATER_THAN_2000 = rushorderprice[2, 2];
+        decimal RUSH_3DAY_LESS_THAN_1000 = rushOrderPrices[0, 0];
+        decimal RUSH_3DAY_1000_TO_2000 = rushOrderPrices[0, 1];
+        decimal RUSH_3DAY_GREATER_THAN_2000 = rushOrderPrices[0, 2];
+        decimal RUSH_5DAY_LESS_THAN_1000 = rushOrderPrices[1, 0];
+        decimal RUSH_5DAY_1000_TO_2000 = rushOrderPrices[1, 1];
+        decimal RUSH_5DAY_GREATER_THAN_2000 = rushOrderPrices[1, 2];
+        decimal RUSH_7DAY_LESS_THAN_1000 = rushOrderPrices[2, 0];
+        decimal RUSH_7DAY_1000_TO_2000 = rushOrderPrices[2, 1];
+        decimal RUSH_7DAY_GREATER_THAN_2000 = rushOrderPrices[2, 2];
 
 
         public enum Delivery
@@ -40,6 +41,8 @@ namespace MegaDesk_Hatch
             , Rush3
             , Rush5
             , Rush7
+            , Rush14
+
         }
         // Declare methods
         public string CustomerName { get; set; }
@@ -53,11 +56,15 @@ namespace MegaDesk_Hatch
 
         public Delivery ShippingType { get; set; }
 
-        public decimal GetQuotePrice() {
+
+
+        public decimal GetQuotePrice()
+        {
 
             decimal runningTotal = BASE_DESK_PRICE;
 
             var surfaceArea = this.Desk.Width * this.Desk.Depth;
+
 
             var surfaceAreaPrice = 0M;
 
@@ -67,8 +74,8 @@ namespace MegaDesk_Hatch
             }
 
             runningTotal += surfaceAreaPrice;
-            
-            
+
+
             //add drawer
             var drawerCost = this.Desk.NumberOfDrawers * DRAWER_COST;
 
@@ -83,31 +90,85 @@ namespace MegaDesk_Hatch
                 case Desk.DesktopMaterial.Oak:
                     surfaceMaterialCost = OAK_COST;
                     break;
+
                 case Desk.DesktopMaterial.Laminate:
                     surfaceMaterialCost = LAMINATE_COST;
                     break;
+
                 case Desk.DesktopMaterial.Pine:
                     surfaceMaterialCost = PINE_COST;
                     break;
+
                 case Desk.DesktopMaterial.Rosewood:
                     surfaceMaterialCost = ROSEWOOD_COST;
                     break;
+
                 case Desk.DesktopMaterial.Veneer:
                     surfaceMaterialCost = VENEER_COST;
-                    break;   
+                    break;
             }
+            switch (this.ShippingType)
+            {
+                case Delivery.Rush3:
+                    if (surfaceArea < 1000)
+                    {
+                        runningTotal += 60;
+                    }
+                    else if (surfaceArea >= 1000 && surfaceArea <= 2000)
+                    {
+                        runningTotal += 70;
+                    }
+                    else
+                    {
+                        runningTotal += 80;
+                    }
+                    break;
 
-            //TODO: add logic to calculate price
-            return QuotePrice;
+                case Delivery.Rush5:
+                    if (surfaceArea < 1000)
+                    {
+                        runningTotal += 40;
+                    }
+                    else if (surfaceArea >= 1000 && surfaceArea <= 2000)
+                    {
+                        runningTotal += 50;
+                    }
+                    else
+                    {
+                        runningTotal += 60;
+                    }
+                    break;
 
+                case Delivery.Rush7:
+                    if (surfaceArea < 1000)
+                    {
+                        runningTotal += 30;
+                    }
+                    else if (surfaceArea >= 1000 && surfaceArea <= 2000)
+                    {
+                        runningTotal += 35;
+                    }
+                    else
+                    {
+                        runningTotal += 40;
+                    }
+                    break;
 
-            //TODO add shipping cost
-
+                default:
+                    runningTotal += 0;
+                    break;
+            }
             return runningTotal;
         }
-        private void getRushOrderPrices()
+
+
+        //TODO: add logic to calculate price
+        //  return QuotePrice;
+
+
+        public static void getRushOrderPrices()
         {
-            _rushOrderPrices = new int[3, 3];
+            rushOrderPrices = new int[3, 3];
             var pricesFile = @"rushOrderPrices.txt";
 
             try
@@ -117,8 +178,8 @@ namespace MegaDesk_Hatch
 
                 foreach (string price in prices)
                 {
-                    _rushOrderPrices[i, j] = int.Parse(price);
-                    if (j ==2)
+                    rushOrderPrices[i, j] = int.Parse(price);
+                    if (j == 2)
                     {
                         i++;
                         j = 0;
