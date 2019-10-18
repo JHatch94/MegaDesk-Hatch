@@ -21,5 +21,13 @@ namespace MegaDesk_Hatch
         {
 
         }
+
+        private void btnMainMenu_Click(object sender, EventArgs e)
+        {
+            var MainMenu = new MainMenu();
+            MainMenu.Tag = this;
+            MainMenu.Show();
+            this.Hide();
+        }
     }
 }

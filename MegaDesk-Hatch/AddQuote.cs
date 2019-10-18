@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace MegaDesk_Hatch
 {
@@ -90,12 +91,12 @@ namespace MegaDesk_Hatch
                     string quotes = reader.ReadToEnd();
                     if (quotes.Length > 0)
                     {
-                        deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
+                        //deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
                     }
                 }
             }
-            deskQuotes.Add(deskQuote);
-            SaveQuotes(deskQuotes);
+            //deskQuotes.Add(deskQuote);
+            //SaveQuotes(deskQuotes);
         }
     }
 }
