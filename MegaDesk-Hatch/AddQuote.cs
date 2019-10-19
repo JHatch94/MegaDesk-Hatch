@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace MegaDesk_Hatch
 {
@@ -139,10 +140,16 @@ namespace MegaDesk_Hatch
                 using (StreamReader reader = new StreamReader(quotesFile))
                 {
                     string quotes = reader.ReadToEnd();
-                    //not sure why this not working
+
+                   
                     currentQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
 
                     currentQuotes.Add(NewDeskQuote);
+          if (quotes.Length > 0)
+                    {
+                        //deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
+                    }
+
                 }
                 SaveQuotes(currentQuotes);
             }
@@ -152,11 +159,15 @@ namespace MegaDesk_Hatch
                 currentQuotes.Add(NewDeskQuote);
                 SaveQuotes(currentQuotes);
             }
+
+            //deskQuotes.Add(deskQuote);
+            //SaveQuotes(deskQuotes);
+
         }
         private void SaveQuotes(List<DeskQuote> currentQuotes)
         {
             var quotesFile = @"quotes.json";
-            // not sure why this is not working
+         
             var quotes = JsonConvert.SerializeObject(currentQuotes);
 
             File.WriteAllText(quotesFile, quotes);

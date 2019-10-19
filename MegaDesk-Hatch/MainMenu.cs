@@ -31,7 +31,7 @@ namespace MegaDesk_Hatch
         //View all quotes button
         private void BtnViewQuotes_Click(object sender, EventArgs e)
         {
-            var viewAllQuotes = new ViewAllQuotes();
+            var viewAllQuotes = new ViewAllQuotes(this);
             viewAllQuotes.Tag = this;
             viewAllQuotes.Show();
             this.Hide();

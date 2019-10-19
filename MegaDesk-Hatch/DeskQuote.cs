@@ -9,12 +9,43 @@ namespace MegaDesk_Hatch
 {
     public class DeskQuote
     {
+
+        public static void getRushOrderPrices()
+        {
+            rushOrderPrices = new int[3, 3];
+            var pricesFile = @"rushOrderPrices.txt";
+
+            try
+            {
+                string[] prices = File.ReadAllLines(pricesFile);
+                int i = 0, j = 0;
+
+                foreach (string price in prices)
+                {
+                    rushOrderPrices[i, j] = int.Parse(price);
+                    if (j == 2)
+                    {
+                        i++;
+                        j = 0;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         public DeskQuote(){
            getRushOrderPrices();
 
           }
         static int[,] rushOrderPrices;
-         //private int[,] rushOrderPrices;
+        //private int[,] rushOrderPrices;
 
         const decimal BASE_DESK_PRICE = 200.0M;
         const decimal SURFACE_AREA_COST = 1.0M;
@@ -47,17 +78,10 @@ namespace MegaDesk_Hatch
         }
         // Declare methods
         public string CustomerName { get; set; }
-
         public DateTime QuoteDate { get; set; }
-
-
         public decimal QuotePrice { get; set; }
-
         public Desk Desk { get; set; }
-
         public Delivery ShippingType { get; set; }
-
-
 
         public decimal GetQuotePrice()
         {
@@ -167,34 +191,6 @@ namespace MegaDesk_Hatch
         //  return QuotePrice;
 
 
-        public static void getRushOrderPrices()
-        {
-            rushOrderPrices = new int[3, 3];
-            var pricesFile = @"rushOrderPrices.txt";
 
-            try
-            {
-                string[] prices = File.ReadAllLines(pricesFile);
-                int i = 0, j = 0;
-
-                foreach (string price in prices)
-                {
-                    rushOrderPrices[i, j] = int.Parse(price);
-                    if (j == 2)
-                    {
-                        i++;
-                        j = 0;
-                    }
-                    else
-                    {
-                        j++;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
     }
 }
