@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +14,41 @@ namespace MegaDesk_Hatch
 {
     public partial class ViewAllQuotes : Form
     {
-        public ViewAllQuotes()
+        private Form _MainMenu;
+
+        public ViewAllQuotes(Form MainMenu)
         {
             InitializeComponent();
+
+            _MainMenu = MainMenu;
+
+            loadGrid();
         }
+       
+        private void loadGrid()
+        {
+            //Acquire the file
+            var quotesFile = @"quotes.json";
+            using (var reader = new StreamReader(quotesFile))
+            {
+                string quotes = reader.ReadToEnd();
+                List<DeskQuote> deskQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
+
+                grdDisplayQuotes.DataSource = deskQuotes.Select(d => new
+                {
+                    Date = d.QuoteDate
+                    , Customer = d.CustomerName
+                    , Depth = d.Desk.Depth
+                    , Width = d.Desk.Width
+                    , Drawers = d.Desk.NumberOfDrawers
+                    , SurfaceMaterial = d.Desk.SurfaceMaterial
+                    , DeliveryType = d.ShippingType
+                    , QuoteAmount = d.QuotePrice.ToString("c")
+                }).ToList();
+            }
+        }
+
+
 
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

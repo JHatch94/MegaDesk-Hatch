@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.grdDisplayQuotes = new System.Windows.Forms.DataGridView();
             this.btnMainMenu = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdDisplayQuotes)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // grdDisplayQuotes
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(811, 398);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
+            this.grdDisplayQuotes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdDisplayQuotes.Location = new System.Drawing.Point(0, 0);
+            this.grdDisplayQuotes.Name = "grdDisplayQuotes";
+            this.grdDisplayQuotes.RowHeadersWidth = 51;
+            this.grdDisplayQuotes.RowTemplate.Height = 24;
+            this.grdDisplayQuotes.Size = new System.Drawing.Size(811, 398);
+            this.grdDisplayQuotes.TabIndex = 0;
+            this.grdDisplayQuotes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellContentClick);
             // 
             // btnMainMenu
             // 
@@ -60,17 +60,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(810, 472);
             this.Controls.Add(this.btnMainMenu);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.grdDisplayQuotes);
             this.Name = "ViewAllQuotes";
             this.Text = "ViewAllQuotes";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdDisplayQuotes)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView grdDisplayQuotes;
         private System.Windows.Forms.Button btnMainMenu;
     }
 }
