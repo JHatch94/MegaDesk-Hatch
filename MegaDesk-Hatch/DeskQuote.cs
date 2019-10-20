@@ -7,10 +7,28 @@ using System.Threading.Tasks;
 
 namespace MegaDesk_Hatch
 {
-
-
     public class DeskQuote
     {
+        //Constructor? I'm not sure what this is here for, or if we actually need it
+        public DeskQuote()
+        {
+
+        }
+
+        //Declare rush delivery options
+        public enum Delivery
+        {
+            Standard
+            , Rush3
+            , Rush5
+            , Rush7
+            , Rush14
+        }
+
+        // Create array to store the rush order price values
+        int[,] rushOrderPrices = getRushOrderPrices();
+
+        //Store value constants
         const decimal BASE_DESK_PRICE = 200.0M;
         const decimal SURFACE_AREA_COST = 1.0M;
         const decimal DRAWER_COST = 50.0M;
@@ -20,31 +38,29 @@ namespace MegaDesk_Hatch
         const decimal ROSEWOOD_COST = 300.0M;
         const decimal VENEER_COST = 125.0M;
 
+        // Creates the rush order pricing array and populate it with usable values
         public static int[,] getRushOrderPrices()
         {
             try
             {
                 // Declare variable for reference to file
                 String pricesFile = @"rushOrderPrices.txt";
+                
                 // Convert contents to int[]
                 int[] prices = Array.ConvertAll(File.ReadAllLines(pricesFile), int.Parse);
+                
                 //Declare rush order pricing array
                 int[,] rushOrderPrices = new int[3, 3];
-
-                foreach (int k in prices)
+                
+                // Populate rushOrderPrices array with values from file
+                int i = 0;
+                int j = 0;
+                for (int k = 0; k <prices.Length;  k++)
                 {
-                    int i = 0;
-                    int j = 0;
                     rushOrderPrices[i, j] = prices[k];
-                    if (j < 2)
-                    {
-                        i++;
-                        j = 0;
-                    }
-                    else
-                    {
-                        j++;
-                    }
+                    if (j == 2)
+                    {i++; j = 0; } 
+                        else{j++;}
                 }
                 return rushOrderPrices;
             }
@@ -54,30 +70,6 @@ namespace MegaDesk_Hatch
             }
         }
 
-        public DeskQuote()
-        {
-            var rushOrderPrices = getRushOrderPrices();
-
-            decimal RUSH_3DAY_LESS_THAN_1000 = rushOrderPrices[0, 0];
-            decimal RUSH_3DAY_1000_TO_2000 = rushOrderPrices[0, 1];
-            decimal RUSH_3DAY_GREATER_THAN_2000 = rushOrderPrices[0, 2];
-            decimal RUSH_5DAY_LESS_THAN_1000 = rushOrderPrices[1, 0];
-            decimal RUSH_5DAY_1000_TO_2000 = rushOrderPrices[1, 1];
-            decimal RUSH_5DAY_GREATER_THAN_2000 = rushOrderPrices[1, 2];
-            decimal RUSH_7DAY_LESS_THAN_1000 = rushOrderPrices[2, 0];
-            decimal RUSH_7DAY_1000_TO_2000 = rushOrderPrices[2, 1];
-            decimal RUSH_7DAY_GREATER_THAN_2000 = rushOrderPrices[2, 2];
-
-        }
-        public enum Delivery
-        {
-            Standard
-            , Rush3
-            , Rush5
-            , Rush7
-            , Rush14
-
-        }
         // Declare methods
         public string CustomerName { get; set; }
         public DateTime QuoteDate { get; set; }
@@ -87,105 +79,80 @@ namespace MegaDesk_Hatch
 
         public decimal GetQuotePrice()
         {
-
+            // Base price
             decimal runningTotal = BASE_DESK_PRICE;
-
+            
+            // Caclulate surface area
             var surfaceArea = this.Desk.Width * this.Desk.Depth;
-
-
+            
+            // Base surface area price
             var surfaceAreaPrice = 0M;
-
+            
+            // If surface area > 1000 logic
             if (surfaceArea > 1000)
-            {
-                surfaceAreaPrice = (surfaceArea - 1000) * SURFACE_AREA_COST;
-            }
-
+                {surfaceAreaPrice = (surfaceArea - 1000) * SURFACE_AREA_COST; }
             runningTotal += surfaceAreaPrice;
 
-
-            //add drawer
+            // Calculate drawer cost + add to running total
             var drawerCost = this.Desk.NumberOfDrawers * DRAWER_COST;
-
             runningTotal += drawerCost;
 
-            // add surface materials
-            decimal surfaceMaterialCost;
-            var surfaceMat = this.Desk.SurfaceMaterial;
+            // TODO: Could the following line be removed?
+            // decimal surfaceMaterialCost;
 
+            // Move surface material to usable variable
+            var surfaceMat = this.Desk.SurfaceMaterial;
+            // Determine cost based on user selection
             switch (surfaceMat)
             {
                 case Desk.DesktopMaterial.Oak:
-                    surfaceMaterialCost = OAK_COST;
+                    runningTotal += OAK_COST;
                     break;
-
                 case Desk.DesktopMaterial.Laminate:
-                    surfaceMaterialCost = LAMINATE_COST;
+                    runningTotal += LAMINATE_COST;
                     break;
-
                 case Desk.DesktopMaterial.Pine:
-                    surfaceMaterialCost = PINE_COST;
+                    runningTotal += PINE_COST;
                     break;
-
                 case Desk.DesktopMaterial.Rosewood:
-                    surfaceMaterialCost = ROSEWOOD_COST;
+                    runningTotal += ROSEWOOD_COST;
                     break;
-
                 case Desk.DesktopMaterial.Veneer:
-                    surfaceMaterialCost = VENEER_COST;
+                    runningTotal += VENEER_COST;
                     break;
             }
+            // Determine shipping type
             switch (this.ShippingType)
             {
-                case Delivery.Rush3:
+                case Delivery.Rush3:    // Rush 3 day shipping
                     if (surfaceArea < 1000)
-                    {
-                        runningTotal += 60;
-                    }
+                        {runningTotal += rushOrderPrices[0, 0];}
                     else if (surfaceArea >= 1000 && surfaceArea <= 2000)
-                    {
-                        runningTotal += 70;
-                    }
+                        {runningTotal += rushOrderPrices[0, 1];}
                     else
-                    {
-                        runningTotal += 80;
-                    }
+                        {runningTotal += rushOrderPrices[0, 2];}
                     break;
-
-                case Delivery.Rush5:
+                case Delivery.Rush5:    // Rush 5 day shipping
                     if (surfaceArea < 1000)
-                    {
-                        runningTotal += 40;
-                    }
+                        {runningTotal += rushOrderPrices[1, 0];}
                     else if (surfaceArea >= 1000 && surfaceArea <= 2000)
-                    {
-                        runningTotal += 50;
-                    }
+                        {runningTotal += rushOrderPrices[1, 1]; }
                     else
-                    {
-                        runningTotal += 60;
-                    }
+                        {runningTotal += rushOrderPrices[1, 2];}
                     break;
-
-                case Delivery.Rush7:
+                case Delivery.Rush7:    // Rush 7 day shipping
                     if (surfaceArea < 1000)
-                    {
-                        runningTotal += 30;
-                    }
+                        {runningTotal += rushOrderPrices[2, 0]; }
                     else if (surfaceArea >= 1000 && surfaceArea <= 2000)
-                    {
-                        runningTotal += 35;
-                    }
+                        {runningTotal += rushOrderPrices[2, 1];}
                     else
-                    {
-                        runningTotal += 40;
-                    }
+                        { runningTotal += rushOrderPrices[2, 2];}
                     break;
-
-                default:
+                default:    // Standard no rush shipping
                     runningTotal += 0;
                     break;
             }
-            return runningTotal;
+         return runningTotal;
         }
     }
 }
