@@ -19,27 +19,8 @@ namespace MegaDesk_Hatch
         {   //Form mainMenu
             InitializeComponent();
             //_mainMenu = mainMenu
-
         }
 
-        private void widthupanddown_Validating(object sender, CancelEventArgs e)
-        {
-            //size of desk in width(min 24"; max 96"
-            
-        }
-
-        private void depthupdown_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //size of desk in  depth (min 12"; max 48")
-           
-        }
-
-
-        private void AddQuote_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            var mainMenu = (Form)this.Tag;
-            mainMenu.Show();
-        }
         private void AddQuote_Load(object sender, EventArgs e)
         {
             //Populate SurfaceMaterials dropdown menu
@@ -49,21 +30,18 @@ namespace MegaDesk_Hatch
                             .Cast<Desk.DesktopMaterial>()
                             .ToList();
             comSurfaceMaterial.DataSource = materials;
-
+            // Begin at index -1
             comSurfaceMaterial.SelectedIndex = -1;
 
             //Populate shipping type dropdown menu
             var shipping = new List<DeskQuote.Delivery>();
-
             shipping = Enum.GetValues(typeof(DeskQuote.Delivery))
                             .Cast<DeskQuote.Delivery>()
                             .ToList();
             comShippingMethod.DataSource = shipping;
-
+            //Begin at index 0
             comShippingMethod.SelectedIndex = 0;
-
         }
-
 
         private void Get_NewQuote_Click(object sender, EventArgs e)
         {
@@ -72,19 +50,15 @@ namespace MegaDesk_Hatch
             // gets the information of the desk.  // needs to fill up this section
             Desk NameOfNewDesk = new Desk();
            
-
             //gets the information entered by the user. // needs to fill up this section
             DeskQuote NewDeskQuote = new DeskQuote();
          
-
             // get the quote amount and add amount to quote
          
             NewDeskQuote.Desk = NameOfNewDesk;
             DateTime today = DateTime.Today;
             NewDeskQuote.QuoteDate = today;
             NewDeskQuote.QuotePrice = NewDeskQuote.GetQuotePrice();
-
-
 
             try
             {
@@ -101,8 +75,6 @@ namespace MegaDesk_Hatch
                 MessageBox.Show("There was an error creating the quote. {0}", err.Message);
             }
         }
-
-
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
@@ -124,10 +96,10 @@ namespace MegaDesk_Hatch
             desk.Depth = numDepth.Value;
             desk.Width = numWidth.Value;
 
-
             var DeskQuote = new DeskQuote();
 
         }
+
         //gets the new quote and adds it to the new file
         public void AddQuoteToFile(DeskQuote NewDeskQuote)
         {
@@ -140,12 +112,9 @@ namespace MegaDesk_Hatch
                 using (StreamReader reader = new StreamReader(quotesFile))
                 {
                     string quotes = reader.ReadToEnd();
-
-                   
                     currentQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
-
                     currentQuotes.Add(NewDeskQuote);
-          if (quotes.Length > 0)
+                    if (quotes.Length > 0)
                     {
                         //deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
                     }
@@ -166,14 +135,32 @@ namespace MegaDesk_Hatch
         }
         private void SaveQuotes(List<DeskQuote> currentQuotes)
         {
+            
             var quotesFile = @"quotes.json";
-         
             var quotes = JsonConvert.SerializeObject(currentQuotes);
-
             File.WriteAllText(quotesFile, quotes);
 
+            File.WriteAllText(@"quotes.json", currentQuotes.ToString());
+            // write JSON directly to a file
+            using (StreamWriter file = File.CreateText(@"quotes.json"))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {currentQuotes.WriteTo(writer); }
         }
 
-
+        private void widthupanddown_Validating(object sender, CancelEventArgs e)
+        {
+            //size of desk in width(min 24"; max 96"
+        }
+        private void depthupdown_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //size of desk in  depth (min 12"; max 48")
+        }
+        
+        // Close the program
+        private void AddQuote_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var mainMenu = (Form)this.Tag;
+            mainMenu.Show();
+        }
     }
 }
