@@ -7,46 +7,10 @@ using System.Threading.Tasks;
 
 namespace MegaDesk_Hatch
 {
+
+
     public class DeskQuote
     {
-
-        public static void getRushOrderPrices()
-        {
-            rushOrderPrices = new int[3, 3];
-            var pricesFile = @"rushOrderPrices.txt";
-
-            try
-            {
-                string[] prices = File.ReadAllLines(pricesFile);
-                int i = 0, j = 0;
-
-                foreach (string price in prices)
-                {
-                    rushOrderPrices[i, j] = int.Parse(price);
-                    if (j == 2)
-                    {
-                        i++;
-                        j = 0;
-                    }
-                    else
-                    {
-                        j++;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-
-        public DeskQuote(){
-           getRushOrderPrices();
-
-          }
-        static int[,] rushOrderPrices;
-        //private int[,] rushOrderPrices;
-
         const decimal BASE_DESK_PRICE = 200.0M;
         const decimal SURFACE_AREA_COST = 1.0M;
         const decimal DRAWER_COST = 50.0M;
@@ -56,17 +20,55 @@ namespace MegaDesk_Hatch
         const decimal ROSEWOOD_COST = 300.0M;
         const decimal VENEER_COST = 125.0M;
 
-        decimal RUSH_3DAY_LESS_THAN_1000 = rushOrderPrices[0, 0];
-        decimal RUSH_3DAY_1000_TO_2000 = rushOrderPrices[0, 1];
-        decimal RUSH_3DAY_GREATER_THAN_2000 = rushOrderPrices[0, 2];
-        decimal RUSH_5DAY_LESS_THAN_1000 = rushOrderPrices[1, 0];
-        decimal RUSH_5DAY_1000_TO_2000 = rushOrderPrices[1, 1];
-        decimal RUSH_5DAY_GREATER_THAN_2000 = rushOrderPrices[1, 2];
-        decimal RUSH_7DAY_LESS_THAN_1000 = rushOrderPrices[2, 0];
-        decimal RUSH_7DAY_1000_TO_2000 = rushOrderPrices[2, 1];
-        decimal RUSH_7DAY_GREATER_THAN_2000 = rushOrderPrices[2, 2];
-     
+        public static int[,] getRushOrderPrices()
+        {
+            try
+            {
+                // Declare variable for reference to file
+                String pricesFile = @"rushOrderPrices.txt";
+                // Convert contents to int[]
+                int[] prices = Array.ConvertAll(File.ReadAllLines(pricesFile), int.Parse);
+                //Declare rush order pricing array
+                int[,] rushOrderPrices = new int[3, 3];
 
+                foreach (int k in prices)
+                {
+                    int i = 0;
+                    int j = 0;
+                    rushOrderPrices[i, j] = prices[k];
+                    if (j < 2)
+                    {
+                        i++;
+                        j = 0;
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+                return rushOrderPrices;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public DeskQuote()
+        {
+            var rushOrderPrices = getRushOrderPrices();
+
+            decimal RUSH_3DAY_LESS_THAN_1000 = rushOrderPrices[0, 0];
+            decimal RUSH_3DAY_1000_TO_2000 = rushOrderPrices[0, 1];
+            decimal RUSH_3DAY_GREATER_THAN_2000 = rushOrderPrices[0, 2];
+            decimal RUSH_5DAY_LESS_THAN_1000 = rushOrderPrices[1, 0];
+            decimal RUSH_5DAY_1000_TO_2000 = rushOrderPrices[1, 1];
+            decimal RUSH_5DAY_GREATER_THAN_2000 = rushOrderPrices[1, 2];
+            decimal RUSH_7DAY_LESS_THAN_1000 = rushOrderPrices[2, 0];
+            decimal RUSH_7DAY_1000_TO_2000 = rushOrderPrices[2, 1];
+            decimal RUSH_7DAY_GREATER_THAN_2000 = rushOrderPrices[2, 2];
+
+        }
         public enum Delivery
         {
             Standard
@@ -185,12 +187,5 @@ namespace MegaDesk_Hatch
             }
             return runningTotal;
         }
-
-
-        //TODO: add logic to calculate price
-        //  return QuotePrice;
-
-
-
     }
 }
