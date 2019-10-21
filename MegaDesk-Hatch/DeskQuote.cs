@@ -154,6 +154,7 @@ namespace MegaDesk_Hatch
                     break;
             }
          return runningTotal;
+
         }
     }
 }

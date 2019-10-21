@@ -60,6 +60,7 @@ namespace MegaDesk_Hatch
             NewDeskQuote.QuoteDate = today;
             NewDeskQuote.QuotePrice = NewDeskQuote.GetQuotePrice();
 
+
             try
             {
                 // add quote to file
