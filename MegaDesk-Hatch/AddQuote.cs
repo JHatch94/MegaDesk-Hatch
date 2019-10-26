@@ -45,16 +45,42 @@ namespace MegaDesk_Hatch
 
         private void Get_NewQuote_Click(object sender, EventArgs e)
         {
+           
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            var MainMenu = new MainMenu();
+            MainMenu.Tag = this;
+            MainMenu.Show();
+            this.Hide();
+        }
+
+        private void NumDrawers_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        //ON BUTTON CLICK
+        private void BtnGetQuote_Click(object sender, EventArgs e)
+        {
+            var desk = new Desk();
+
+            //desk.Depth = numDepth.Value;
+            //desk.Width = numWidth.Value;
+            //desk.SurfaceMaterial = comSurfaceMaterial.SelectedValue.ToString();
+
+            var DeskQuote = new DeskQuote();
             //This if statement is to check if the add quote form is complete.
 
             // gets the information of the desk.  // needs to fill up this section
             Desk NameOfNewDesk = new Desk();
-           
+
             //gets the information entered by the user. // needs to fill up this section
             DeskQuote NewDeskQuote = new DeskQuote();
-         
+
             // get the quote amount and add amount to quote
-         
+
             NewDeskQuote.Desk = NameOfNewDesk;
             DateTime today = DateTime.Today;
             NewDeskQuote.QuoteDate = today;
@@ -75,79 +101,42 @@ namespace MegaDesk_Hatch
             {
                 MessageBox.Show("There was an error creating the quote. {0}", err.Message);
             }
-        }
-
-        private void BtnCancel_Click(object sender, EventArgs e)
-        {
-            var MainMenu = new MainMenu();
-            MainMenu.Tag = this;
-            MainMenu.Show();
-            this.Hide();
-        }
-
-        private void NumDrawers_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void BtnGetQuote_Click(object sender, EventArgs e)
-        {
-            var desk = new Desk();
-
-            desk.Depth = numDepth.Value;
-            desk.Width = numWidth.Value;
-
-            var DeskQuote = new DeskQuote();
 
         }
 
         //gets the new quote and adds it to the new file
-        public void AddQuoteToFile(DeskQuote NewDeskQuote)
+        private void AddQuoteToFile(DeskQuote deskQuote)
         {
-            string quotesFile = @"quotes.json"; //add quotes.json
-
-            if (File.Exists(quotesFile))
+            List<DeskQuote> deskQuotes = new List<DeskQuote>();
+            if (!File.Exists(@"quotes.json"))
             {
-                List<DeskQuote> currentQuotes = new List<DeskQuote>();
-
-                using (StreamReader reader = new StreamReader(quotesFile))
-                {
-                    string quotes = reader.ReadToEnd();
-                    currentQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
-                    currentQuotes.Add(NewDeskQuote);
-                    if (quotes.Length > 0)
-                    {
-                        //deskQuote = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
-                    }
-
-                }
-                SaveQuotes(currentQuotes);
+                deskQuotes.Add(deskQuote);
+                var list = JsonConvert.SerializeObject(deskQuotes);
+                File.WriteAllText(@"quotes.json", JsonConvert.SerializeObject(deskQuotes));
             }
             else
             {
-                List<DeskQuote> currentQuotes = new List<DeskQuote>();
-                currentQuotes.Add(NewDeskQuote);
-                SaveQuotes(currentQuotes);
+                using (StreamReader reader = new StreamReader(@"quotes.json"))
+                {
+                    string allQuotes = reader.ReadToEnd();
+                    deskQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(allQuotes);
+                }
+                deskQuotes.Add(deskQuote);
+                var list = JsonConvert.SerializeObject(deskQuotes);
+                File.WriteAllText(@"quotes.json", list);
             }
-
-            //deskQuotes.Add(deskQuote);
-            //SaveQuotes(deskQuotes);
-
         }
-        private void SaveQuotes(List<DeskQuote> currentQuotes)
+
+        private void SaveQuotes(List<DeskQuote> quotes)
         {
-            
             var quotesFile = @"quotes.json";
-            var quotes = JsonConvert.SerializeObject(currentQuotes);
-            File.WriteAllText(quotesFile, quotes);
+            // serilize quotes
 
-            File.WriteAllText(@"quotes.json", currentQuotes.ToString());
-            // write JSON directly to a file
-            using (StreamWriter file = File.CreateText(@"quotes.json"))
-            using (JsonTextWriter writer = new JsonTextWriter(file))
-            {currentQuotes.WriteTo(writer); }
+            var serializedQuotes = JsonConvert.SerializeObject(quotes);
+
+            // write quotes to file
+            File.WriteAllText(quotesFile, serializedQuotes);
         }
-
         private void widthupanddown_Validating(object sender, CancelEventArgs e)
         {
             //size of desk in width(min 24"; max 96"

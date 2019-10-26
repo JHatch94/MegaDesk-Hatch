@@ -24,16 +24,15 @@ namespace MegaDesk_Hatch
 
             loadGrid();
         }
-       
         private void loadGrid()
         {
             //Acquire the file
             var quotesFile = @"quotes.json";
-            using (var reader = new StreamReader(quotesFile))
+            using (StreamReader reader = new StreamReader(quotesFile))
             {
+                // All the created quotes will load.
                 string quotes = reader.ReadToEnd();
                 List<DeskQuote> deskQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(quotes);
-
                 grdDisplayQuotes.DataSource = deskQuotes.Select(d => new
                 {
                     Date = d.QuoteDate
