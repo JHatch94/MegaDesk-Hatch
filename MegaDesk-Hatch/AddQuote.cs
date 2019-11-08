@@ -66,77 +66,27 @@ namespace MegaDesk_Hatch
         {
             var desk = new Desk();
 
-            //desk.Depth = numDepth.Value;
-            //desk.Width = numWidth.Value;
-            //desk.SurfaceMaterial = comSurfaceMaterial.SelectedValue.ToString();
+            desk.Depth = numDepth.Value;
+            desk.Width = numWidth.Value;
+            desk.SurfaceMaterial = (Desk.DesktopMaterial)comSurfaceMaterial.SelectedValue;
+            //Create new deskquote
+            var deskQuote = new DeskQuote();
 
-            var DeskQuote = new DeskQuote();
-            //This if statement is to check if the add quote form is complete.
-
-            // gets the information of the desk.  // needs to fill up this section
-            Desk NameOfNewDesk = new Desk();
-
-            //gets the information entered by the user. // needs to fill up this section
-            DeskQuote NewDeskQuote = new DeskQuote();
-
-            // get the quote amount and add amount to quote
-
-            NewDeskQuote.Desk = NameOfNewDesk;
+            deskQuote.Desk = desk;
             DateTime today = DateTime.Today;
-            NewDeskQuote.QuoteDate = today;
-            NewDeskQuote.QuotePrice = NewDeskQuote.GetQuotePrice();
+            deskQuote.QuoteDate = today;
+            deskQuote.QuotePrice = deskQuote.GetQuotePrice();
 
+            //show displayquote form
+            DisplayQuote NewDeskForm = new DisplayQuote(deskQuote);
+            NewDeskForm.Tag = this.Tag;
+            NewDeskForm.Show();
+            Hide();
 
-            try
-            {
-                // add quote to file
-                AddQuoteToFile(NewDeskQuote);
-
-                //show displayquote form
-                DisplayQuote NewDeskForm = new DisplayQuote(NewDeskQuote);
-                NewDeskForm.Show();
-                Hide();
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show("There was an error creating the quote. {0}", err.Message);
-            }
 
         }
 
-        //gets the new quote and adds it to the new file
-        private void AddQuoteToFile(DeskQuote deskQuote)
-        {
-            List<DeskQuote> deskQuotes = new List<DeskQuote>();
-            if (!File.Exists(@"quotes.json"))
-            {
-                deskQuotes.Add(deskQuote);
-                var list = JsonConvert.SerializeObject(deskQuotes);
-                File.WriteAllText(@"quotes.json", JsonConvert.SerializeObject(deskQuotes));
-            }
-            else
-            {
-                using (StreamReader reader = new StreamReader(@"quotes.json"))
-                {
-                    string allQuotes = reader.ReadToEnd();
-                    deskQuotes = JsonConvert.DeserializeObject<List<DeskQuote>>(allQuotes);
-                }
-                deskQuotes.Add(deskQuote);
-                var list = JsonConvert.SerializeObject(deskQuotes);
-                File.WriteAllText(@"quotes.json", list);
-            }
-        }
 
-        private void SaveQuotes(List<DeskQuote> quotes)
-        {
-            var quotesFile = @"quotes.json";
-            // serilize quotes
-
-            var serializedQuotes = JsonConvert.SerializeObject(quotes);
-
-            // write quotes to file
-            File.WriteAllText(quotesFile, serializedQuotes);
-        }
         private void widthupanddown_Validating(object sender, CancelEventArgs e)
         {
             //size of desk in width(min 24"; max 96"
