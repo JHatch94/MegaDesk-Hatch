@@ -61,19 +61,22 @@ namespace MegaDesk_Hatch
 
         }
 
-        //ON BUTTON CLICK
+        //Get quote functionality
         private void BtnGetQuote_Click(object sender, EventArgs e)
         {
             var desk = new Desk();
 
             desk.Depth = numDepth.Value;
             desk.Width = numWidth.Value;
+            desk.NumberOfDrawers = numDrawers.Value;
             desk.SurfaceMaterial = (Desk.DesktopMaterial)comSurfaceMaterial.SelectedValue;
             //Create new deskquote
             var deskQuote = new DeskQuote();
 
             deskQuote.Desk = desk;
             DateTime today = DateTime.Today;
+            deskQuote.CustomerName = txtCustName.Text;
+            //deskQuote.ShippingType = ;
             deskQuote.QuoteDate = today;
             deskQuote.QuotePrice = deskQuote.GetQuotePrice();
 
@@ -82,7 +85,6 @@ namespace MegaDesk_Hatch
             NewDeskForm.Tag = this.Tag;
             NewDeskForm.Show();
             Hide();
-
 
         }
 

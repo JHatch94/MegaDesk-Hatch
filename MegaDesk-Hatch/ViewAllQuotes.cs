@@ -47,8 +47,6 @@ namespace MegaDesk_Hatch
             }
         }
 
-
-
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 

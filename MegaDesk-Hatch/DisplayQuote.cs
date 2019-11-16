@@ -19,14 +19,13 @@ namespace MegaDesk_Hatch
         public DisplayQuote(DeskQuote NewDeskQuote)
         {
             InitializeComponent();
-            // we neeed to match these variables from your yours.
 
           numWidth.Value = NewDeskQuote.Desk.Width;
           numDepth.Value = NewDeskQuote.Desk.Depth;
           txtSurfaceMaterial.Text = NewDeskQuote.Desk.SurfaceMaterial.ToString();
           numDrawers.Value = NewDeskQuote.Desk.NumberOfDrawers;
           txtShippingMethod.Text = NewDeskQuote.ShippingType.ToString();
-          txtCustName.Text = NewDeskQuote.CustomerName;
+          txtCustName.Text = NewDeskQuote.CustomerName.ToString();
           txtPrice.Text = NewDeskQuote.QuotePrice.ToString();
         }
 
