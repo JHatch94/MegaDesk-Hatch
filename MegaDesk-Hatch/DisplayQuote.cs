@@ -19,6 +19,7 @@ namespace MegaDesk_Hatch
         public DisplayQuote(DeskQuote NewDeskQuote)
         {
             InitializeComponent();
+            _deskQuote = NewDeskQuote;
 
           numWidth.Value = NewDeskQuote.Desk.Width;
           numDepth.Value = NewDeskQuote.Desk.Depth;
@@ -71,6 +72,8 @@ namespace MegaDesk_Hatch
             {
                 MessageBox.Show("There was an error creating the quote. {0}", err.Message);
             }
+
+            Close();
         }
         //gets the new quote and adds it to the new file
         private void AddQuoteToFile(DeskQuote deskQuote)

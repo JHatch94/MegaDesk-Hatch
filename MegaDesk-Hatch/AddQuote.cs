@@ -76,7 +76,7 @@ namespace MegaDesk_Hatch
             deskQuote.Desk = desk;
             DateTime today = DateTime.Today;
             deskQuote.CustomerName = txtCustName.Text;
-            //deskQuote.ShippingType = ;
+            deskQuote.ShippingType = (DeskQuote.Delivery)comShippingMethod.SelectedItem;
             deskQuote.QuoteDate = today;
             deskQuote.QuotePrice = deskQuote.GetQuotePrice();
 
